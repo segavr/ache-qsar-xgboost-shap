@@ -1,0 +1,13 @@
+chembl-webresource-client==0.10.9
+rdkit-pypi==2022.9.5
+xgboost==3.2.0
+scikit-learn==1.8.0
+pandas==2.1.4
+numpy==1.26.4
+matplotlib==3.8.2
+seaborn==0.13.0
+shap==0.51.0
+optuna==4.8.0
+joblib==1.5.3
+streamlit==1.55.0
+py3dmol==2.5.4

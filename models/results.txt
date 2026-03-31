@@ -1,0 +1,5 @@
+Regression R2: 0.5171
+Regression RMSE: 1.0503
+Regression MAE: 0.7985
+Classification ROC-AUC: 0.8551
+Classification Balanced Accuracy: 0.7769
