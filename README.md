@@ -373,14 +373,14 @@ https://doi.org/10.1021/jm4004285
 
 ## 10. Author and License
 
-**Author:** Manus AI  
+**Author:**  Semen Gavrilov
 **License:** MIT  
 **Citation:** If you use this project in your research, please cite:
 
 ```bibtex
 @software{ache_qsar_2026,
   title={AI-Driven Analysis of Enzyme Inhibitors: QSAR Modeling for Acetylcholinesterase Inhibitors},
-  author={Manus AI},
+  author={Semen Gavrilov},
   year={2026},
   url={https://github.com/yourusername/ache-qsar-xgboost-shap}
 }
