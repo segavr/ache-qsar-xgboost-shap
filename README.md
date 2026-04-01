@@ -52,9 +52,9 @@ The models demonstrate robust performance on the scaffold-split test set:
 
 | Task | Metric | Value |
 |------|--------|-------|
-| **Regression** | R² Score | 0.510 |
-| **Regression** | RMSE | 1.058 |
-| **Regression** | MAE | 0.798 |
+| **Regression** | R² Score | 0.507 |
+| **Regression** | RMSE | 1.061 |
+| **Regression** | MAE | 0.797 |
 | **Classification** | ROC-AUC | 0.855 |
 | **Classification** | Balanced Accuracy | 0.777 |
 
@@ -73,9 +73,13 @@ SHAP analysis provides insights into the molecular features driving AChE inhibit
 - **Top Features:** The model relies on a mix of structural bits (e.g., `Bit_1098`) and physicochemical descriptors like `BalabanJ` (topological index) and `SlogP_VSA1` (lipophilicity/surface area).
 - **Lipophilicity (LogP):** Features related to LogP and VSA (Van der Waals Surface Area) show that moderately lipophilic compounds with specific surface area distributions are preferred for binding in the AChE gorge.
 - **Molecular Shape:** The importance of `BalabanJ` suggests that the degree of branching and molecular shape are critical for fitting into the narrow, deep active site of the enzyme.
+- **Morgan Fingerprint Bits:** Specific bits like `Bit_1098` represent local substructures that are strongly correlated with activity. For instance, the presence of certain aromatic ring systems or specific heteroatom arrangements significantly influences the model's prediction.
 
 #### SHAP Dependence Plot (Top Feature)
 ![SHAP Dependence](reports/figures/shap_dependence_Bit_1098.png)
+
+#### Scaffold Split vs Random Split
+In this study, we prioritized **Murcko scaffold splitting** over random splitting. While random splitting often yields higher performance metrics (R² > 0.7), it tends to overestimate a model's real-world utility by allowing structurally similar compounds from the same chemical series to be present in both training and test sets. Scaffold splitting provides a more honest assessment of the model's ability to generalize to truly novel chemical space, which is critical for lead optimization and scaffold hopping in drug discovery.
 
 ## Limitations
 - **2D Descriptors:** The model does not account for 3D conformations or stereochemistry, which are vital for specific enzyme-ligand interactions.
@@ -111,3 +115,4 @@ This project was developed as a benchmark for autonomous AI agents in scientific
    - `python feature_engineering_v2.py`
    - `python train_models.py`
 4. Launch the app: `streamlit run streamlit_app.py`
+5. Explore the data: Open `exploratory_analysis.ipynb` in a Jupyter environment.
