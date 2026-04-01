@@ -13,7 +13,7 @@ The main purpose of this repository is to explore **how far modern autonomous AI
 It serves both as:
 - A practical demonstration of current capabilities (and limitations) of AI agents in computational drug discovery workflows.
 - A personal portfolio project in applied machine learning and cheminformatics.
-- 
+
 This project presents a comprehensive **Quantitative Structure-Activity Relationship (QSAR)** study for predicting the bioactivity of small molecules against human Acetylcholinesterase (AChE), a key target in Alzheimer's disease drug discovery. Using machine learning and explainable AI techniques, we developed predictive models trained on **5,940 unique compounds** from the ChEMBL database with experimentally determined IC₅₀ values. Our best-performing XGBoost regression model achieves an R² of **0.517** on the test set, while the classification model achieves a **ROC-AUC of 0.855** for predicting active inhibitors. This repository serves as both a reproducible scientific study and a practical tool for computational chemistry and drug discovery applications.
 
 ---
@@ -406,7 +406,7 @@ https://doi.org/10.1021/jm4004285
 - **RDKit:** For molecular informatics and descriptor calculations
 - **XGBoost & SHAP:** For powerful machine learning and explainability tools
 - **Streamlit:** For interactive web application framework
-- 
+
 This project was created as a **deliberate experiment** to test the capabilities of autonomous AI agents in scientific programming and cheminformatics.
 
 - **Manus AI** generated the initial version of the entire repository (data fetching, processing, feature engineering, modeling, visualizations, and Streamlit app) in a single large commit based on a comprehensive prompt I provided.
