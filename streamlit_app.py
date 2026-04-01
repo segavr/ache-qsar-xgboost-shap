@@ -14,10 +14,11 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🧪 AChE QSAR Predictor")
+st.title("🧪 AI-Driven AChE QSAR Predictor")
 st.markdown("""
-Predict the bioactivity (pIC50) of small molecules against Human Acetylcholinesterase (AChE) 
-using machine learning and explainable AI (SHAP).
+Predict the bioactivity (pIC50) of small molecules against **Human Acetylcholinesterase (AChE)** 
+using machine learning and explainable AI (SHAP). This tool is part of a comprehensive QSAR study 
+demonstrating human-AI collaboration in drug discovery.
 """)
 
 # Load models
@@ -26,10 +27,10 @@ def load_models():
     reg_model = joblib.load('models/xgboost_regressor.joblib')
     clf_model = joblib.load('models/xgboost_classifier.joblib')
     selected_features = joblib.load('models/selected_features.joblib')
-    selector = joblib.load('models/variance_selector.joblib')
-    return reg_model, clf_model, selected_features, selector
+    # selector = joblib.load('models/variance_selector.joblib')
+    return reg_model, clf_model, selected_features
 
-reg_model, clf_model, selected_features, selector = load_models()
+reg_model, clf_model, selected_features = load_models()
 
 def calculate_features(smiles):
     """Calculate molecular features for a given SMILES string."""
@@ -63,12 +64,13 @@ col1, col2 = st.columns([2, 1])
 with col1:
     smiles_input = st.text_input(
         "Enter SMILES string:",
+        value="S=C(CCCCCCCNc1c2c(nc3ccccc13)CCCC2)NCCc1c[nH]c2ccccc12",
         placeholder="e.g., CC(C)Cc1ccc(cc1)C(C)C(O)=O",
         help="Input a SMILES string for a small molecule"
     )
 
 with col2:
-    predict_button = st.button("🔮 Predict", use_container_width=True)
+    predict_button = st.button("🔮 Predict Bioactivity", use_container_width=True)
 
 # Prediction section
 if predict_button and smiles_input:
@@ -109,18 +111,20 @@ if predict_button and smiles_input:
                 st.warning(f"🟡 **Predicted as INACTIVE** (pIC50 < 6.0)")
             
             # SHAP explanation
-            st.subheader("📊 Feature Importance (SHAP)")
+            st.subheader("📊 Why this prediction? (SHAP Interpretation)")
             explainer = shap.TreeExplainer(reg_model)
             shap_values = explainer.shap_values(features_sel)
             
-            # Create SHAP force plot
-            fig, ax = plt.subplots(figsize=(12, 4))
-            shap.force_plot(explainer.expected_value, shap_values[0], features_sel.iloc[0], 
-                           matplotlib=True, show=False)
-            st.pyplot(fig)
+            # Top contributing features for THIS prediction
+            st.markdown("**Top features driving this specific prediction:**")
+            shap_df = pd.DataFrame({
+                'Feature': selected_features,
+                'SHAP Value': shap_values[0]
+            }).sort_values(by='SHAP Value', key=abs, ascending=False).head(5)
+            st.table(shap_df)
             
             # Molecular properties
-            st.subheader("🧬 Molecular Properties")
+            st.subheader("🧬 Calculated Molecular Properties")
             props = {
                 "Molecular Weight": f"{Descriptors.MolWt(mol):.2f}",
                 "LogP": f"{Descriptors.MolLogP(mol):.2f}",
@@ -134,23 +138,17 @@ if predict_button and smiles_input:
 
 # Information section
 st.markdown("---")
-st.subheader("ℹ️ About This Tool")
+st.subheader("ℹ️ Project Information")
 st.markdown("""
-This predictor is based on a machine learning model trained on **5,940 compounds** from ChEMBL 
-with experimental bioactivity data against human Acetylcholinesterase (AChE).
+This predictor is part of the **AI-Driven Analysis of Enzyme Inhibitors** project, a human-AI collaboration experiment.
 
-**Model Performance:**
-- Regression R²: 0.517
-- Classification ROC-AUC: 0.855
-- Balanced Accuracy: 0.777
+**Scientific Details:**
+- **Target:** Human Acetylcholinesterase (CHEMBL220)
+- **Dataset:** 5,940 unique compounds from ChEMBL
+- **Validation:** Murcko scaffold-based splitting (80/20)
+- **Performance (Test Set):** R²: 0.51, ROC-AUC: 0.86
 
-**Limitations:**
-- Predictions are based on 2D molecular descriptors and fingerprints only
-- No 3D conformational information is considered
-- Activity cliffs and applicability domain issues may affect predictions
-- Use predictions as a starting point for experimental validation
-
-**Reference:**
-- Target: Human Acetylcholinesterase (ChEMBL ID: CHEMBL220)
-- Data Source: ChEMBL Database
+**Author:** Semen Gavrilov  
+**License:** MIT  
+**Acknowledgments:** This project was developed with the assistance of **Manus**, an autonomous AI agent.
 """)
